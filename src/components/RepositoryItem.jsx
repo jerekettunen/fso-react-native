@@ -1,10 +1,11 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import RepositoryItemCounter from "./RepositoryItemCounter";
+import theme from "../theme";
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: "#e7e7ed",
+    backgroundColor: theme.colors.cardColor,
     borderRadius: 10,
     marginTop: 7,
     marginLeft: 7,
