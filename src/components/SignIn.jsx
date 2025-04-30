@@ -2,6 +2,9 @@ import { Text, TextInput, Pressable, View, Button, StyleSheet } from 'react-nati
 import { useFormik } from 'formik';
 import theme from '../theme';
 import * as yup from 'yup';
+import useSignIn from '../hooks/useSignIn';
+import React from 'react';
+import { useNavigate } from 'react-router-native';
 
 const style = StyleSheet.create({
     container: {
@@ -50,9 +53,7 @@ const initialValues = {
   password: '',
 };
 
-const onSubmit = (values) => {
-  console.log('Form values:', values);
-}
+
 
 const validationSchema = yup.object().shape({
   username: yup.string().required('Username is required'),
@@ -61,12 +62,29 @@ const validationSchema = yup.object().shape({
 
 
 
+
+
 const SignIn = () => {
+  const [ signIn ] = useSignIn();
+  const navigate = useNavigate();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+  
+    try {
+      const { data } = await signIn({ username, password });
+      navigate('/'); // Navigate to the home page after successful sign-in
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit,
   });
+ 
 
   return (
     <View style={style.container}>
@@ -78,9 +96,10 @@ const SignIn = () => {
         placeholder="Username"
         value={formik.values.username}
         onChangeText={formik.handleChange('username')}
+        autoCapitalize='none'
       />
       {formik.touched.username && formik.errors.username && (
-        <Text style={style.errorStyle}>{formik.errors.username}</Text>
+        <Text style={style.errorStyle}>{String(formik.errors.username)}</Text>
       )}
       <TextInput 
         style={[
@@ -93,7 +112,7 @@ const SignIn = () => {
         onChangeText={formik.handleChange('password')}
       />
       {formik.touched.password && formik.errors.password && (
-        <Text style={style.errorStyle}>{formik.errors.password}</Text>
+        <Text style={style.errorStyle}>{String(formik.errors.password)}</Text>
       )}
       <Pressable
         style={style.button}

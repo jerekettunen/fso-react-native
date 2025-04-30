@@ -11,6 +11,16 @@ const styles = StyleSheet.create({
 })
 
 const AppBarTab = ({ title, route }) => {
+  if (route === 'signOut') {
+    return (
+      <View style={styles.container}>
+          <Text fontWeight="bold" fontSize="subheading" color="textTertiary">
+            {title}
+          </Text>
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <Link to={route} component={Pressable}>

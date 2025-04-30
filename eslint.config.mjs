@@ -40,5 +40,6 @@ export default defineConfig([{
     rules: {
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
+        "no-console": "off",
     },
 }]);

@@ -1,7 +1,11 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AppBarTab from './AppBarTab';
 import theme from '../theme';
+import { useQuery, useApolloClient } from '@apollo/client';
+import { GET_ME } from '../graphql/queries';
+import useAuthStorage from '../hooks/useAuthStorage';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -22,12 +26,32 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+  const apolloClient = useApolloClient();
+  const authStorage = useAuthStorage();
+  const { data } = useQuery(GET_ME);
+
+  const signOut = async () => {
+    await authStorage.removeAccessToken();
+    apolloClient.resetStore();
+  }
+
   return (
   <View style={styles.container}>
     <ScrollView horizontal
       contentContainerStyle={styles.scrollView}>
       <AppBarTab title="Repositories" route="/" />
-      <AppBarTab title="Sign In" route="/signin" />
+      {data && data.me ? (
+        <>
+          <Pressable onPress={signOut}>
+            <AppBarTab title="Sign out" route='signOut' />
+          </Pressable>   
+        </>
+      ) : (
+        <>
+          <AppBarTab title="Sign in" route="/signIn" />
+        </>
+      )}
+      
     </ScrollView>
   </View>
   )
