@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Button, Linking } from "react-native";
 import RepositoryItemCounter from "./RepositoryItemCounter";
 import theme from "../theme";
 
@@ -59,19 +59,26 @@ const styles = StyleSheet.create({
   statLabel: {
     color: "gray",
   },
+  button: {
+    marginTop: 10,
+    color: "white",
+    backgroundColor: "#0366d6",
+    borderRadius: 5,
+    padding: 7,
+  },
 });
 
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, state }) => {
   return (
     <View 
     testID="repositoryItem"
     style={styles.container}>
       <View style={styles.row}>
         <Image source={{ uri: item.ownerAvatarUrl }} style={styles.avatar} />
-        <View style={styles.textContainer}>
-          <Text style={styles.fullName}>{item.fullName}</Text>
-          <Text style={styles.description}>{item.description}</Text>
+        <View style={styles.textContainer} width="90%">
+          <Text style={styles.fullName} numberOfLines={1} ellipsizeMode="tail">{item.fullName}</Text>
+          <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">{item.description}</Text>
           <Text style={styles.language}>{item.language}</Text>
         </View>
       </View>
@@ -81,6 +88,11 @@ const RepositoryItem = ({ item }) => {
         <RepositoryItemCounter item={item.reviewCount} name="Reviews" />
         <RepositoryItemCounter item={item.ratingAverage} name="Rating" />
       </View>
+      {state && (
+        <View style={styles.button}>
+          <Button color="white" title="Open in GitHub" onPress={() => Linking.openURL(item.url)} />
+        </View>
+      )}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import Text from "./Text"
+import Text from "../Text"
 import { View, Pressable, StyleSheet } from "react-native"
 import { Link } from "react-router-native"
 
