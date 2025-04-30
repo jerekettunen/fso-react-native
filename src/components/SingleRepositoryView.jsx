@@ -90,12 +90,14 @@ const ReviewItem = ({ item }) => {
 
 
 const SingleRepositoryView = ( { id } ) => {
+
   const { repository, loading } = useRepository(id);
-  if (loading) {
+  if (loading || !repository) {
     return <Text>loading...</Text>;
   }
   const reviews = repository.reviews.edges.map(edge => edge.node);
   console.log(reviews);
+
   return (
     <FlatList
       data={reviews}
