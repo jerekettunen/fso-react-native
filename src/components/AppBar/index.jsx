@@ -41,6 +41,7 @@ const AppBar = () => {
       contentContainerStyle={styles.scrollView}>
       <AppBarTab title="Repositories" route="/" />
       <AppBarTab title="Create a review" route="/review" />
+      <AppBarTab title="My reviews" route="/myReviews" />
       {data && data.me ? (
         <>
           <Pressable onPress={signOut}>
