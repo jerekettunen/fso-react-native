@@ -50,6 +50,7 @@ const AppBar = () => {
       ) : (
         <>
           <AppBarTab title="Sign in" route="/signIn" />
+          <AppBarTab title="Sign up" route="/signUp" />
         </>
       )}
       
