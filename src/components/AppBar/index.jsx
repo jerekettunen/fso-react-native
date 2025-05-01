@@ -40,10 +40,10 @@ const AppBar = () => {
     <ScrollView horizontal
       contentContainerStyle={styles.scrollView}>
       <AppBarTab title="Repositories" route="/" />
-      <AppBarTab title="Create a review" route="/review" />
-      <AppBarTab title="My reviews" route="/myReviews" />
       {data && data.me ? (
         <>
+          <AppBarTab title="Create a review" route="/review" />
+          <AppBarTab title="My reviews" route="/myReviews" />
           <Pressable onPress={signOut}>
             <AppBarTab title="Sign out" route='signOut' />
           </Pressable>   

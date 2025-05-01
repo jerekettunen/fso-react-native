@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
 
 const Main = () => {  
   const repoMatch = useMatch('/repo/:id');
-  console.log("This is the repomatch" + repoMatch);
   // console.log(repoMatch.params.id);
   const repoID = repoMatch ? repoMatch.params.id : '';
 

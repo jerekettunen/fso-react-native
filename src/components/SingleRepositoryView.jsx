@@ -91,12 +91,15 @@ const ReviewItem = ({ item }) => {
 
 const SingleRepositoryView = ( { id } ) => {
 
-  const { repository, loading } = useRepository(id);
+  const { repository, loading, fetchMore } = useRepository( { id, first: 8 } );
   if (loading || !repository) {
     return <Text>loading...</Text>;
   }
+  const onEndReach = () => {
+    fetchMore();
+  };
+
   const reviews = repository.reviews.edges.map(edge => edge.node);
-  console.log(reviews);
 
   return (
     <FlatList
@@ -106,6 +109,8 @@ const SingleRepositoryView = ( { id } ) => {
       keyExtractor={(item) => item.id}
       ListHeaderComponent={() => <RepositoryItem item={repository} state={true} />}
       ListHeaderComponentStyle={{ paddingBottom: 10 }}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 }

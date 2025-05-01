@@ -63,7 +63,6 @@ const ReviewForm = () => {
 
   const onSubmit = async (values) => {
     const { ownerName, repositoryName, rating, text } = values;
-    console.log('Submitting review:', values);
     try {
       await createReview({ ownerName, repositoryName, rating: Number(rating), text });
       navigate('/');

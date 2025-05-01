@@ -50,25 +50,27 @@ export class RepositoryListContainer extends React.Component {
     );
   };
   render() {
-    const { repositories, navigate } = this.props;
-  const repositoryNodes = repositories
-    ? repositories.edges.map(edge => edge.node)
-    : null;
-  return (
-    <View>
-      <FlatList
-        data={repositoryNodes}
-        ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => 
-          <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
-            <RepositoryItem item={item} state={false}/>
-          </Pressable>
-        }
-        ListHeaderComponent={this.renderHeader}
-      />
-    </View>
-  );
-}
+    const { repositories, navigate, onEndReach } = this.props;
+    const repositoryNodes = repositories
+      ? repositories.edges.map(edge => edge.node)
+      : [];
+    return (
+      <View>
+        <FlatList
+          data={repositoryNodes}
+          ItemSeparatorComponent={ItemSeparator}
+          renderItem={({ item }) => 
+            <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
+              <RepositoryItem item={item} state={false}/>
+            </Pressable>
+          }
+          ListHeaderComponent={this.renderHeader}
+          onEndReached={onEndReach}
+          onEndReachedThreshold={0.5}
+        />
+      </View>
+    );
+  }
 }
 
 // Higher-order component to inject navigation prop
@@ -91,7 +93,10 @@ const RepositoryList = () => {
 
   const [debouncedSearch] = useDebounce(searchQuery, 500);
 
-  const { repositories } = useRepositories(filter, debouncedSearch);
+  const { repositories, fetchMore } = useRepositories({filter: filter, search: debouncedSearch, first: 3});
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   // Get the nodes from the edges array
 
@@ -99,7 +104,8 @@ const RepositoryList = () => {
   filter={filter} 
   setFilter={setFilter}
   searchQuery={searchQuery}
-  setSearchQuery={setSearchQuery} />;
+  setSearchQuery={setSearchQuery}
+  onEndReach={onEndReach} />;
 };
 
 export default RepositoryList;
